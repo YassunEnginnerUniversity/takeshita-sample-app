@@ -4,13 +4,15 @@ class UsersController < ApplicationController
   end
 
   def new
-    @user = User.new  
+    @user = User.new
   end
 
   def create
-    @user = User.new(user_params)    # 実装は終わっていないことに注意!
+    @user = User.new(user_params) # 実装は終わっていないことに注意!
     if @user.save
-      flash[:success] = "Welcome to the Sample App!"
+      reset_session
+      log_in @user
+      flash[:success] = 'Welcome to the Sample App!'
       redirect_to @user
     else
       render 'new', status: :unprocessable_entity
@@ -23,5 +25,4 @@ class UsersController < ApplicationController
     params.require(:user).permit(:name, :email, :password,
                                  :password_confirmation)
   end
-
 end
